@@ -1,0 +1,17 @@
+{
+  "displayName": "GreatClock.IconAtlas",
+  "name": "com.greatclock.iconatlas",
+  "version": "1.0.0",
+  "unity": "2018.4",
+  "description": "Icon Atlas.",
+  "type": "library",
+  "keywords": [
+    "ugui",
+    "atlas",
+    "icon"
+  ],
+  "author": {
+    "name": "greatclock",
+    "email": "thegreatclock@gmail.com"
+  }
+}
