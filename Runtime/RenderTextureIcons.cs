@@ -29,6 +29,7 @@ namespace GreatClock.Common.IconAtlas {
 
 		private int mX;
 		private int mY;
+		private int mCapacity;
 
 		private float mUVXDiv;
 		private float mUVYDiv;
@@ -67,7 +68,9 @@ namespace GreatClock.Common.IconAtlas {
 			mRenderTexture.autoGenerateMips = false;
 			mRenderTexture.useMipMap = false;
 			mRenderTexture.Create();
+#if !UNITY_2021_1_OR_NEWER
 			mRenderTexture.MarkRestoreExpected();
+#endif
 			mRenderTexture.filterMode = FilterMode.Bilinear;
 			mRenderTexture.wrapMode = TextureWrapMode.Clamp;
 
@@ -84,6 +87,7 @@ namespace GreatClock.Common.IconAtlas {
 			Graphics.Blit(clearedTexture, mRenderTexture);
 			mX = mPadding;
 			mY = mPadding;
+			mCapacity = ((atlasWidth - padding) / iconWidth) * ((atlasHeight - padding) / iconHeight);
 
 			AtlasChecker.Register(this);
 		}
@@ -189,6 +193,17 @@ namespace GreatClock.Common.IconAtlas {
 			mClearedDatas.Push(data);
 			return true;
 		}
+
+		/// <summary>
+		/// Get the amount of icon areas in use.
+		/// </summary>
+		/// <returns>The amount of icon areas in use.</returns>
+		public int GetUsingCount() { return mUsingDatas.Count; }
+
+		/// <summary>
+		/// The max amount of icons that can be included in the atlas.
+		/// </summary>
+		public int Capacity { get { return mCapacity; } }
 
 		/// <summary>
 		/// Release all unmanaged resources. This method should be called when the atlas will not be used any more.
