@@ -42,9 +42,9 @@
                 v2f o;
                 float4 vertex = UnityObjectToClipPos(v.vertex);
                 float4 rect = _TargetRect;
-                #if UNITY_UV_STARTS_AT_TOP
+#if UNITY_UV_STARTS_AT_TOP
                 rect.y = 1 - rect.y - rect.w;
-                #endif
+#endif
                 float2 xy = rect.xy + rect.zw * (vertex.xy / vertex.w + 1) * 0.5;
                 o.vertex = float4((xy * 2 - 1) * vertex.w, vertex.z, vertex.w);
                 o.uv_border.xy = v.uv;
@@ -57,6 +57,7 @@
 
             sampler2D _MainTex;
             sampler2D _MaskTex;
+            float _MaskChannelType;
             float4 _UV_x;
             float4 _UV_y;
             float4x4 _ColorMatrix;
@@ -70,7 +71,8 @@
                 float2 uv_rt = float2(lerp(_UV_x.z, _UV_x.w, i.border_lbrt.z), lerp(_UV_y.z, _UV_y.w, i.border_lbrt.w));
 
                 float2 uv = uv_lb * (1 - rtlb.zw) + uv_mid * rtlb.zw * rtlb.xy + uv_rt * (1 - rtlb.xy);
-                float4 col = tex2D(_MainTex, uv) * tex2D(_MaskTex, i.uv_mask);
+                float4 mask = tex2D(_MaskTex, i.uv_mask);
+                float4 col = tex2D(_MainTex, uv) * lerp(mask, mask.a, _MaskChannelType);
 
                 col.rgb = mul(_ColorMatrix, float4(col.rgb, 1)).rgb;
                 col.a *= _ColorMatrix[3][3];

@@ -21,6 +21,7 @@ namespace GreatClock.Common.IconAtlas {
 		private int mBlitParamColorMatrix;
 		private int mBlitParamMaskTex;
 		private int mBlitParamMaskUV;
+		private int mBlitParaMaskChannel;
 
 		private object mUsingsPrevKey;
 		private IconUsageData mUsingsPrevData;
@@ -83,6 +84,7 @@ namespace GreatClock.Common.IconAtlas {
 			mBlitParamColorMatrix = Shader.PropertyToID("_ColorMatrix");
 			mBlitParamMaskTex = Shader.PropertyToID("_MaskTex");
 			mBlitParamMaskUV = Shader.PropertyToID("_MaskRect");
+			mBlitParaMaskChannel = Shader.PropertyToID("_MaskChannelType");
 
 			Graphics.Blit(clearedTexture, mRenderTexture);
 			mX = mPadding;
@@ -300,6 +302,7 @@ namespace GreatClock.Common.IconAtlas {
 				maskRect = new Rect(maskRect.min + maskRect.size * drawRegion.min, maskRect.size * drawRegion.size);
 			}
 			mDrawSlicedMaterial.SetVector(mBlitParamMaskUV, new Vector4(maskRect.x, maskRect.y, maskRect.width, maskRect.height));
+			mDrawSlicedMaterial.SetFloat(mBlitParaMaskChannel, properties.maskChannelType == eMaskChannelType.ColorTint ? 0f : 1f);
 			Graphics.Blit(tex, mRenderTexture, mDrawSlicedMaterial);
 			return true;
 		}

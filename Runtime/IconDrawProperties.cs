@@ -17,6 +17,20 @@ namespace GreatClock.Common.IconAtlas {
 	}
 
 	/// <summary>
+	/// How the mask texture works on target texture.
+	/// </summary>
+	public enum eMaskChannelType {
+		/// <summary>
+		/// Color Multiply.
+		/// </summary>
+		ColorTint,
+		/// <summary>
+		/// Alpha in mask texture only.
+		/// </summary>
+		AlphaOnly
+	}
+
+	/// <summary>
 	/// All additional drawing properties.
 	/// </summary>
 	public struct IconDrawProperties {
@@ -34,6 +48,7 @@ namespace GreatClock.Common.IconAtlas {
 		public Texture maskTexture;
 		public Rect maskRectUV;
 		public eMaskRegionType maskRegionType;
+		public eMaskChannelType maskChannelType;
 
 		/// <summary>
 		/// Get a default IconDrawProperties object.
@@ -134,11 +149,13 @@ namespace GreatClock.Common.IconAtlas {
 		/// </summary>
 		/// <param name="maskTex">Texture to per pixel multiply by the texture to draw.</param>
 		/// <param name="regionType">The area of the icon that the mask applies.</param>
+		/// <param name="channelType">How the mask texture works on target texture.</param>
 		/// <returns>The IconDrawProperties object itself.</returns>
-		public IconDrawProperties SetMask(Texture maskTex, eMaskRegionType regionType) {
+		public IconDrawProperties SetMask(Texture maskTex, eMaskRegionType regionType, eMaskChannelType channelType) {
 			maskTexture = maskTex;
 			maskRectUV = new Rect(0f, 0f, 1f, 1f);
 			maskRegionType = regionType;
+			maskChannelType = channelType;
 			return this;
 		}
 
@@ -148,11 +165,13 @@ namespace GreatClock.Common.IconAtlas {
 		/// <param name="maskTex">Texture to per pixel multiply by the texture to draw.</param>
 		/// <param name="uv">The rect area to apply for mask.</param>
 		/// <param name="regionType">The area of the icon that the mask applies.</param>
+		/// <param name="channelType">How the mask texture works on target texture.</param>
 		/// <returns>The IconDrawProperties object itself.</returns>
-		public IconDrawProperties SetMask(Texture maskTex, Rect uv, eMaskRegionType regionType) {
+		public IconDrawProperties SetMask(Texture maskTex, Rect uv, eMaskRegionType regionType, eMaskChannelType channelType) {
 			maskTexture = maskTex;
 			maskRectUV = uv;
 			maskRegionType = regionType;
+			maskChannelType = channelType;
 			return this;
 		}
 
